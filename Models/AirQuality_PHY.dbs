@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="AirQuality_DW" id="PostgreSQL-ec2" database="PostgreSQL" >
+	<schema name="instance" catalogname="AirQuality_DW" >
+		<table name="facts_airquality" >
+			<column name="uniqueid" prior="UniqueID" type="bigint" jt="-5" mandatory="y" />
+			<column name="indicatorid" prior="indicatorID" type="bigint" jt="-5" mandatory="y" />
+			<column name="geojoinid" prior="GeoJoinID" type="bigint" jt="-5" mandatory="y" />
+			<column name="timeid" prior="TimeID" type="integer" jt="4" mandatory="y" />
+			<column name="datavalue" prior="DataValue" type="numeric" length="3" decimal="1" jt="2" />
+			<index name="pk_facts_airquality" unique="PRIMARY_KEY" >
+				<column name="uniqueid" />
+				<column name="indicatorid" />
+				<column name="geojoinid" />
+				<column name="timeid" />
+			</index>
+			<fk name="fk_facts_airquality_indicator" virtual="y" to_schema="AirQuality_DW.instance" to_table="indicator" >
+				<fk_column name="indicatorid" pk="indicator_id" />
+			</fk>
+			<fk name="fk_facts_airquality_geography" virtual="y" to_schema="AirQuality_DW.instance" to_table="geography" >
+				<fk_column name="geojoinid" pk="geojoinid" />
+			</fk>
+			<fk name="fk_facts_airquality_time" virtual="y" to_schema="AirQuality_DW.instance" to_table="time" >
+				<fk_column name="timeid" pk="timeid" />
+			</fk>
+		</table>
+		<table name="geography" prior="Geography" >
+			<column name="geojoinid" prior="GeoJoinID" type="bigint" jt="-5" mandatory="y" />
+			<column name="geoplacename" prior="GeoPlaceName" type="char" length="20" jt="1" />
+			<column name="longitutde" prior="Longitutde" type="double precision" jt="3" />
+			<column name="latitude" prior="Latitude" type="double precision" jt="3" />
+			<index name="pk_geography" unique="PRIMARY_KEY" >
+				<column name="geojoinid" />
+			</index>
+		</table>
+		<table name="indicator" prior="Indicator" >
+			<column name="indicator_id" prior="Indicator_ID" type="bigint" jt="-5" mandatory="y" />
+			<column name="measure" prior="Measure" type="char" length="20" jt="1" />
+			<column name="measureinfo" prior="MeasureInfo" type="char" length="20" jt="1" />
+			<index name="pk_indicator" unique="PRIMARY_KEY" >
+				<column name="indicator_id" />
+			</index>
+		</table>
+		<table name="time" prior="Time" >
+			<column name="timeid" prior="TimeID" type="varchar" length="20" jt="12" mandatory="y" />
+			<column name="dateoriginalformat" prior="DateOriginalFormat" type="date" jt="91" />
+			<column name="dateisoformat" prior="DateIsoFormat" type="date" jt="91" />
+			<column name="year" prior="Year" type="date" jt="91" />
+			<column name="qurter" prior="Qurter" type="integer" jt="4" />
+			<column name="month" prior="Month" type="integer" jt="4" />
+			<column name="monthname" prior="MonthName" type="varchar" length="20" jt="12" />
+			<column name="dayname" prior="DayName" type="varchar" length="20" jt="12" />
+			<column name="weekofyear" prior="WeekofYear" type="integer" jt="4" />
+			<column name="weekofmonth" prior="WeekofMonth" type="integer" jt="4" />
+			<index name="pk_time" unique="PRIMARY_KEY" >
+				<column name="timeid" />
+			</index>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-35f" confirmed="y" show_relation="columns" >
+		<entity schema="AirQuality_DW.instance" name="facts_airquality" color="C1D8EE" x="255" y="51" />
+		<entity schema="AirQuality_DW.instance" name="geography" color="C1D8EE" x="595" y="85" />
+		<entity schema="AirQuality_DW.instance" name="indicator" color="C1D8EE" x="51" y="51" />
+		<entity schema="AirQuality_DW.instance" name="time" color="C1D8EE" x="255" y="289" />
+		<script name="SQL_Editor" id="Editor-23ae" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "AirQuality_DW";
+
+CREATE  TABLE "AirQuality_DW".facts_airquality ( 
+	uniqueid             bigint  NOT NULL  ,
+	indicatorid          bigint  NOT NULL  ,
+	geojoinid            bigint  NOT NULL  ,
+	timeid               integer  NOT NULL  ,
+	datavalue            numeric(3,1)    ,
+	CONSTRAINT pk_facts_airquality PRIMARY KEY ( uniqueid, indicatorid, geojoinid, timeid )
+ );
+
+CREATE  TABLE "AirQuality_DW".geography ( 
+	geojoinid            bigint  NOT NULL  ,
+	geoplacename         char(20)    ,
+	longitutde           double precision    ,
+	latitude             double precision    ,
+	CONSTRAINT pk_geography PRIMARY KEY ( geojoinid )
+ );
+
+CREATE  TABLE "AirQuality_DW"."indicator" ( 
+	indicator_id         bigint  NOT NULL  ,
+	measure              char(20)    ,
+	measureinfo          char(20)    ,
+	CONSTRAINT pk_indicator PRIMARY KEY ( indicator_id )
+ );
+
+CREATE  TABLE "AirQuality_DW"."time" ( 
+	timeid               varchar(20)  NOT NULL  ,
+	dateoriginalformat   date    ,
+	dateisoformat        date    ,
+	"year"               date    ,
+	qurter               integer    ,
+	"month"              integer    ,
+	monthname            varchar(20)    ,
+	dayname              varchar(20)    ,
+	weekofyear           integer    ,
+	weekofmonth          integer    ,
+	CONSTRAINT pk_time PRIMARY KEY ( timeid )
+ );
+]]></string>
+		</script>
+	</layout>
+</project>

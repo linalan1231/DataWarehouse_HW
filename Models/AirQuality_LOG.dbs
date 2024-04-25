@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="AirQuality_DW" id="LogicalDesign-225e" database="LogicalDesign" >
+	<schema name="INSTANCE" catalogname="AirQuality_DW" >
+		<table name="Geography" prior="Entity" >
+			<column name="GeoJoinID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="GeoPlaceName" type="CHAR" length="20" jt="1" />
+			<column name="Longitutde" type="DOUBLE" jt="8" />
+			<column name="Latitude" type="DOUBLE" jt="8" />
+			<index name="pk_Geography" unique="PRIMARY_KEY" >
+				<column name="GeoJoinID" />
+			</index>
+		</table>
+		<table name="Indicator" prior="Entity" >
+			<column name="Indicator_ID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="Measure" type="CHAR" length="20" jt="1" />
+			<column name="MeasureInfo" type="CHAR" length="20" jt="1" />
+			<index name="pk_Indicator" unique="PRIMARY_KEY" >
+				<column name="Indicator_ID" />
+			</index>
+		</table>
+		<table name="Time" prior="Entity" >
+			<column name="TimeID" type="VARCHAR" length="20" jt="12" mandatory="y" />
+			<column name="DateOriginalFormat" type="DATE" jt="91" />
+			<column name="DateIsoFormat" type="DATE" jt="91" />
+			<column name="Year" type="DATE" jt="91" />
+			<column name="Qurter" type="INT" jt="4" />
+			<column name="Month" type="INT" jt="4" />
+			<column name="MonthName" type="VARCHAR" length="20" jt="12" />
+			<column name="DayName" type="VARCHAR" length="20" jt="12" />
+			<column name="WeekofYear" type="INT" jt="4" />
+			<column name="WeekofMonth" type="INT" jt="4" />
+			<index name="pk_Time" unique="PRIMARY_KEY" >
+				<column name="TimeID" />
+			</index>
+		</table>
+		<table name="facts_airquality" prior="Entity" >
+			<column name="UniqueID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="indicatorID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="GeoJoinID" prior="Geo" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="TimeID" prior="TimePeriodID" type="INT" jt="4" mandatory="y" />
+			<column name="DataValue" type="DECIMAL" length="3" decimal="1" jt="3" />
+			<index name="pk_facts_airquality" unique="PRIMARY_KEY" >
+				<column name="UniqueID" />
+				<column name="indicatorID" />
+				<column name="GeoJoinID" />
+				<column name="TimeID" />
+			</index>
+			<fk name="fk_facts_airquality_Indicator" virtual="y" to_schema="AirQuality_DW.INSTANCE" to_table="Indicator" type="Identifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="indicatorID" pk="Indicator_ID" />
+			</fk>
+			<fk name="fk_facts_airquality_Geography" virtual="y" to_schema="AirQuality_DW.INSTANCE" to_table="Geography" type="Identifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="GeoJoinID" pk="GeoJoinID" />
+			</fk>
+			<fk name="fk_facts_airquality_Time" virtual="y" to_schema="AirQuality_DW.INSTANCE" to_table="Time" type="Identifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="TimeID" pk="TimeID" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-db9" show_relation="columns" >
+		<entity schema="AirQuality_DW.INSTANCE" name="Geography" color="C1D8EE" x="595" y="85" />
+		<entity schema="AirQuality_DW.INSTANCE" name="Indicator" color="C1D8EE" x="51" y="51" />
+		<entity schema="AirQuality_DW.INSTANCE" name="Time" color="C1D8EE" x="255" y="289" />
+		<entity schema="AirQuality_DW.INSTANCE" name="facts_airquality" color="C1D8EE" x="255" y="51" />
+	</layout>
+</project>

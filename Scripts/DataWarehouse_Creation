@@ -1,0 +1,40 @@
+CREATE SCHEMA "AirQuality_DW";
+
+CREATE  TABLE "AirQuality_DW".facts_airquality ( 
+	uniqueid             bigint  NOT NULL  ,
+	indicatorid          bigint  NOT NULL  ,
+	geojoinid            bigint  NOT NULL  ,
+	timeid               integer  NOT NULL  ,
+	datavalue            numeric(3,1)    ,
+	CONSTRAINT pk_facts_airquality PRIMARY KEY ( uniqueid, indicatorid, geojoinid, timeid )
+ );
+
+CREATE  TABLE "AirQuality_DW".geography ( 
+	geojoinid            bigint  NOT NULL  ,
+	geoplacename         char(20)    ,
+	longitutde           double precision    ,
+	latitude             double precision    ,
+	CONSTRAINT pk_geography PRIMARY KEY ( geojoinid )
+ );
+
+CREATE  TABLE "AirQuality_DW"."indicator" ( 
+	indicator_id         bigint  NOT NULL  ,
+	measure              char(20)    ,
+	measureinfo          char(20)    ,
+	CONSTRAINT pk_indicator PRIMARY KEY ( indicator_id )
+ );
+
+CREATE  TABLE "AirQuality_DW"."time" ( 
+	timeid               varchar(20)  NOT NULL  ,
+	dateoriginalformat   date    ,
+	dateisoformat        date    ,
+	"year"               date    ,
+	qurter               integer    ,
+	"month"              integer    ,
+	monthname            varchar(20)    ,
+	dayname              varchar(20)    ,
+	weekofyear           integer    ,
+	weekofmonth          integer    ,
+	CONSTRAINT pk_time PRIMARY KEY ( timeid )
+ );
+
