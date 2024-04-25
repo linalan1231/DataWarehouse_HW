@@ -1,0 +1,23 @@
+import pandas as pd
+#dataset unique identifier
+dataset_identifier = "c3uy-2p5r"
+
+#URL to get the data 
+url = f"https://data.cityofnewyork.us/api/views/{dataset_identifier}/rows.csv?accessType=DOWNLOAD"
+
+#reading the data 
+df = pd.read_csv(url)
+df = df.to_csv(index = False)
+
+
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from io import StringIO
+connection_string_azure_storage = "use your own connection string"
+container_name = "airquality"
+blob_name = "airquality_data"
+
+
+blob_service_client = BlobServiceClient.from_connection_string(connection_string_azure_storage)
+blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+
+blob_client.upload_blob(df, overwrite= True)
