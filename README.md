@@ -2,8 +2,7 @@
 
 
 Data Descriptions:
-The Air quality Data contains 18026 rows and  12 columns containing information like UniqueID, IndicatorID, Name, Measure, Measure Info, Geo Type Name, Geo Join ID, Geo Place Name, Time Period,
-Start Date, Value, as well as Data Value. To view the data dictionary or to get the data source, please click on the link below. 
+The data came from the NYC OpenData containing information on NYC air quality survilance data base on different neighborhood. The Air quality Data itself contains 18026 rows and  12 columns like UniqueID, IndicatorID, Name, Measure, Measure Info, Geo Type Name, Geo Join ID, Geo Place Name, Time Period, Start Date, Value, as well as Data Value. To view the data dictionary or to get the data source, please click on the link below. 
 
 Link to data source:
 https://catalog.data.gov/dataset/air-quality
