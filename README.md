@@ -8,7 +8,7 @@ Link to data source:
 https://catalog.data.gov/dataset/air-quality
 
 OlD Data Dictionary:
-https://data.cityofnewyork.us/Environment/Air-Quality/c3uy-2p5r/about_data or 
+https://data.cityofnewyork.us/Environment/Air-Quality/c3uy-2p5r/about_data
 
 Updated Data Dictionary
 
