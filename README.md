@@ -9,7 +9,10 @@ https://catalog.data.gov/dataset/air-quality
 
 Data Dictionary:
 https://data.cityofnewyork.us/Environment/Air-Quality/c3uy-2p5r/about_data or 
-https://docs.google.com/spreadsheets/d/1UcXPdYVzQmD1CnHctGj3nmy-lTEf_iIukDYfYCL0h5Q/edit?usp=sharing
+
+Updated Data Dictionary
+<img width="515" alt="Screenshot 2024-05-13 at 5 56 51 PM" src="https://github.com/linalan1231/DataWarehouse_HW/assets/70352593/adf5b597-f3f9-412d-a6fc-da317cc9277b">
+
 
 Part 1 Data modeling: 
 To examine and understand the today, the first step was to read and understand the process behind the data. Then the data were divided into two categories: Quanlitative vs Quantitative. After 
