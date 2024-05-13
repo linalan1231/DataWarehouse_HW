@@ -6,6 +6,8 @@
 			<column name="GeoPlaceName" type="CHAR" length="20" jt="1" />
 			<column name="Longitutde" type="DOUBLE" jt="8" />
 			<column name="Latitude" type="DOUBLE" jt="8" />
+			<column name="Year" type="BIGINT" jt="-5" />
+			<column name="Borough" type="VARCHAR" length="20" jt="12" />
 			<index name="pk_Geography" unique="PRIMARY_KEY" >
 				<column name="GeoJoinID" />
 			</index>

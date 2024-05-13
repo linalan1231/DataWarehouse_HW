@@ -5,17 +5,20 @@ CREATE  TABLE "airquality".geography (
 	geoplacename         char(20)    ,
 	longitutde           double precision    ,
 	latitude             double precision    ,
+	"year"               bigint    ,
+	borough              varchar(20)    ,
 	CONSTRAINT pk_geography PRIMARY KEY ( geojoinid )
  );
 
-CREATE  TABLE "airquality"."indicator" ( 
+CREATE  TABLE "instance"."indicator" ( 
 	indicator_id         bigint  NOT NULL  ,
 	measure              char(20)    ,
 	measureinfo          char(20)    ,
-	uniqueid             bigint[]  NOT NULL  ,
-	CONSTRAINT pk_indicator PRIMARY KEY ( indicator_id ),
-	CONSTRAINT unq_indicator_uniqueid UNIQUE ( uniqueid ) 
+	uniqueid             integer    ,
+	CONSTRAINT pk_indicator PRIMARY KEY ( indicator_id )
  );
+
+CREATE UNIQUE INDEX unq_uniqueid ON "instance"."indicator" ( uniqueid );
 
 CREATE  TABLE "airquality"."time" ( 
 	timeid               varchar(20)  NOT NULL  ,
@@ -40,4 +43,4 @@ CREATE  TABLE "airquality".facts_airquality (
 	CONSTRAINT pk_facts_airquality PRIMARY KEY ( uniqueid, indicatorid, geojoinid, timeid )
  );
 
-ALTER TABLE "instance".facts_airquality ADD CONSTRAINT fk_facts_airquality_indicator_0 FOREIGN KEY ( uniqueid ) REFERENCES "instance"."indicator"( uniqueid );
+ALTER TABLE "airquality".facts_airquality ADD CONSTRAINT fk_facts_airquality_indicator_0 FOREIGN KEY ( uniqueid ) REFERENCES "instance"."indicator"( uniqueid );

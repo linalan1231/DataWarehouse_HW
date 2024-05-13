@@ -17,6 +17,4 @@ dividing the dataset into two categories, fact and dimension tables were created
 <img width="1180" alt="Screenshot 2024-04-25 at 10 45 17 AM" src="https://github.com/linalan1231/DataWarehouse_HW/assets/70352593/9141e4a2-3628-45c9-8525-eee095c083ce">
 
 The next step was to use DB schema to create the physical and logical model and lastly uploaded to a container to be stored in the cloud. 
-<img width="770" alt="Screenshot 2024-05-13 at 2 46 03 PM" src="https://github.com/linalan1231/DataWarehouse_HW/assets/70352593/77ce057e-e6db-426e-899f-27f4e5d96739">
-
-Visualizations link : https://cuny907-my.sharepoint.com/:u:/r/personal/alan_lin37_login_cuny_edu/Documents/Attachments/CIS9440HW.pbix?csf=1&web=1&e=SDLCdf
+<img width="772" alt="Screenshot 2024-04-25 at 10 55 49 AM" src="https://github.com/linalan1231/DataWarehouse_HW/assets/70352593/3966ebbc-e9ce-4ece-ab72-3147c92243ae">
