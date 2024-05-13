@@ -7,10 +7,11 @@ The data came from the NYC OpenData containing information on NYC air quality su
 Link to data source:
 https://catalog.data.gov/dataset/air-quality
 
-Data Dictionary:
+OlD Data Dictionary:
 https://data.cityofnewyork.us/Environment/Air-Quality/c3uy-2p5r/about_data or 
 
 Updated Data Dictionary
+
 <img width="515" alt="Screenshot 2024-05-13 at 5 56 51 PM" src="https://github.com/linalan1231/DataWarehouse_HW/assets/70352593/adf5b597-f3f9-412d-a6fc-da317cc9277b">
 
 
