@@ -14,8 +14,12 @@
 			<column name="Indicator_ID" type="BIGINT" jt="-5" mandatory="y" />
 			<column name="Measure" type="CHAR" length="20" jt="1" />
 			<column name="MeasureInfo" type="CHAR" length="20" jt="1" />
+			<column name="UniqueID" type="INT" jt="4" />
 			<index name="pk_Indicator" unique="PRIMARY_KEY" >
 				<column name="Indicator_ID" />
+			</index>
+			<index name="unq_UniqueID" unique="UNIQUE_INDEX" >
+				<column name="UniqueID" />
 			</index>
 		</table>
 		<table name="Time" prior="Entity" >
@@ -54,12 +58,15 @@
 			<fk name="fk_facts_airquality_Time" virtual="y" to_schema="AirQuality_DW.INSTANCE" to_table="Time" type="Identifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
 				<fk_column name="TimeID" pk="TimeID" />
 			</fk>
+			<fk name="fk_facts_airquality_Indicator_0" to_schema="AirQuality_DW.INSTANCE" to_table="Indicator" type="Identifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="UniqueID" pk="UniqueID" />
+			</fk>
 		</table>
 	</schema>
 	<layout name="Default Layout" id="Layout-db9" show_relation="columns" >
-		<entity schema="AirQuality_DW.INSTANCE" name="Geography" color="C1D8EE" x="595" y="85" />
-		<entity schema="AirQuality_DW.INSTANCE" name="Indicator" color="C1D8EE" x="51" y="51" />
-		<entity schema="AirQuality_DW.INSTANCE" name="Time" color="C1D8EE" x="255" y="289" />
-		<entity schema="AirQuality_DW.INSTANCE" name="facts_airquality" color="C1D8EE" x="255" y="51" />
+		<entity schema="AirQuality_DW.INSTANCE" name="Geography" color="C1D8EE" x="592" y="80" />
+		<entity schema="AirQuality_DW.INSTANCE" name="Indicator" color="C1D8EE" x="48" y="48" />
+		<entity schema="AirQuality_DW.INSTANCE" name="Time" color="C1D8EE" x="256" y="288" />
+		<entity schema="AirQuality_DW.INSTANCE" name="facts_airquality" color="C1D8EE" x="256" y="48" />
 	</layout>
 </project>

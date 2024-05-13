@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="AirQuality_DW" id="PostgreSQL-ec2" database="PostgreSQL" >
+<project name="AirQuality_DW" id="PostgreSQL-2440" database="PostgreSQL" >
 	<schema name="instance" catalogname="AirQuality_DW" >
 		<table name="facts_airquality" >
 			<column name="uniqueid" prior="UniqueID" type="bigint" jt="-5" mandatory="y" />
@@ -22,12 +22,15 @@
 			<fk name="fk_facts_airquality_time" virtual="y" to_schema="AirQuality_DW.instance" to_table="time" >
 				<fk_column name="timeid" pk="timeid" />
 			</fk>
+			<fk name="fk_facts_airquality_indicator_0" to_schema="AirQuality_DW.instance" to_table="indicator" >
+				<fk_column name="uniqueid" pk="uniqueid" />
+			</fk>
 		</table>
 		<table name="geography" prior="Geography" >
 			<column name="geojoinid" prior="GeoJoinID" type="bigint" jt="-5" mandatory="y" />
 			<column name="geoplacename" prior="GeoPlaceName" type="char" length="20" jt="1" />
-			<column name="longitutde" prior="Longitutde" type="double precision" jt="3" />
-			<column name="latitude" prior="Latitude" type="double precision" jt="3" />
+			<column name="year" prior="longitutde" type="bigint" jt="-5" />
+			<column name="borough" prior="latitude" type="varchar" length="20" jt="12" />
 			<index name="pk_geography" unique="PRIMARY_KEY" >
 				<column name="geojoinid" />
 			</index>
@@ -36,8 +39,12 @@
 			<column name="indicator_id" prior="Indicator_ID" type="bigint" jt="-5" mandatory="y" />
 			<column name="measure" prior="Measure" type="char" length="20" jt="1" />
 			<column name="measureinfo" prior="MeasureInfo" type="char" length="20" jt="1" />
+			<column name="uniqueid" prior="unique_id" type="bigint[]" jt="2003" mandatory="y" />
 			<index name="pk_indicator" unique="PRIMARY_KEY" >
 				<column name="indicator_id" />
+			</index>
+			<index name="unq_indicator_uniqueid" unique="UNIQUE_KEY" >
+				<column name="uniqueid" />
 			</index>
 		</table>
 		<table name="time" prior="Time" >
@@ -56,24 +63,15 @@
 			</index>
 		</table>
 	</schema>
-	<layout name="Default Layout" id="Layout-35f" confirmed="y" show_relation="columns" >
-		<entity schema="AirQuality_DW.instance" name="facts_airquality" color="C1D8EE" x="255" y="51" />
-		<entity schema="AirQuality_DW.instance" name="geography" color="C1D8EE" x="595" y="85" />
-		<entity schema="AirQuality_DW.instance" name="indicator" color="C1D8EE" x="51" y="51" />
-		<entity schema="AirQuality_DW.instance" name="time" color="C1D8EE" x="255" y="289" />
-		<script name="SQL_Editor" id="Editor-23ae" language="SQL" >
-			<string><![CDATA[CREATE SCHEMA "AirQuality_DW";
+	<layout name="Default Layout" id="Layout-19dc" confirmed="y" show_relation="columns" >
+		<entity schema="AirQuality_DW.instance" name="facts_airquality" color="C1D8EE" x="256" y="48" />
+		<entity schema="AirQuality_DW.instance" name="geography" color="C1D8EE" x="592" y="80" />
+		<entity schema="AirQuality_DW.instance" name="indicator" color="C1D8EE" x="48" y="48" />
+		<entity schema="AirQuality_DW.instance" name="time" color="C1D8EE" x="256" y="288" />
+		<script name="SQL_Editor" id="Editor-14ac" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA IF NOT EXISTS "airquality";
 
-CREATE  TABLE "AirQuality_DW".facts_airquality ( 
-	uniqueid             bigint  NOT NULL  ,
-	indicatorid          bigint  NOT NULL  ,
-	geojoinid            bigint  NOT NULL  ,
-	timeid               integer  NOT NULL  ,
-	datavalue            numeric(3,1)    ,
-	CONSTRAINT pk_facts_airquality PRIMARY KEY ( uniqueid, indicatorid, geojoinid, timeid )
- );
-
-CREATE  TABLE "AirQuality_DW".geography ( 
+CREATE  TABLE "airquality".geography ( 
 	geojoinid            bigint  NOT NULL  ,
 	geoplacename         char(20)    ,
 	longitutde           double precision    ,
@@ -81,14 +79,16 @@ CREATE  TABLE "AirQuality_DW".geography (
 	CONSTRAINT pk_geography PRIMARY KEY ( geojoinid )
  );
 
-CREATE  TABLE "AirQuality_DW"."indicator" ( 
+CREATE  TABLE "airquality"."indicator" ( 
 	indicator_id         bigint  NOT NULL  ,
 	measure              char(20)    ,
 	measureinfo          char(20)    ,
-	CONSTRAINT pk_indicator PRIMARY KEY ( indicator_id )
+	uniqueid             bigint[]  NOT NULL  ,
+	CONSTRAINT pk_indicator PRIMARY KEY ( indicator_id ),
+	CONSTRAINT unq_indicator_uniqueid UNIQUE ( uniqueid ) 
  );
 
-CREATE  TABLE "AirQuality_DW"."time" ( 
+CREATE  TABLE "airquality"."time" ( 
 	timeid               varchar(20)  NOT NULL  ,
 	dateoriginalformat   date    ,
 	dateisoformat        date    ,
@@ -101,6 +101,63 @@ CREATE  TABLE "AirQuality_DW"."time" (
 	weekofmonth          integer    ,
 	CONSTRAINT pk_time PRIMARY KEY ( timeid )
  );
+
+CREATE  TABLE "airquality".facts_airquality ( 
+	uniqueid             bigint  NOT NULL  ,
+	indicatorid          bigint  NOT NULL  ,
+	geojoinid            bigint  NOT NULL  ,
+	timeid               integer  NOT NULL  ,
+	datavalue            numeric(3,1)    ,
+	CONSTRAINT pk_facts_airquality PRIMARY KEY ( uniqueid, indicatorid, geojoinid, timeid )
+ );
+
+ALTER TABLE "instance".facts_airquality ADD CONSTRAINT fk_facts_airquality_indicator_0 FOREIGN KEY ( uniqueid ) REFERENCES "instance"."indicator"( uniqueid );
+]]></string>
+		</script>
+		<script name="SQL_Editor_001" id="Editor-26d5" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA IF NOT EXISTS "airquality";
+
+CREATE  TABLE "airquality".geography ( 
+	geojoinid            bigint  NOT NULL  ,
+	geoplacename         char(20)    ,
+	"year"               bigint    ,
+	borough              varchar(20)    ,
+	CONSTRAINT pk_geography PRIMARY KEY ( geojoinid )
+ );
+
+CREATE  TABLE "airquality"."indicator" ( 
+	indicator_id         bigint  NOT NULL  ,
+	measure              char(20)    ,
+	measureinfo          char(20)    ,
+	uniqueid             bigint[]  NOT NULL  ,
+	CONSTRAINT pk_indicator PRIMARY KEY ( indicator_id ),
+	CONSTRAINT unq_indicator_uniqueid UNIQUE ( uniqueid ) 
+ );
+
+CREATE  TABLE "airquality"."time" ( 
+	timeid               varchar(20)  NOT NULL  ,
+	dateoriginalformat   date    ,
+	dateisoformat        date    ,
+	"year"               date    ,
+	qurter               integer    ,
+	"month"              integer    ,
+	monthname            varchar(20)    ,
+	dayname              varchar(20)    ,
+	weekofyear           integer    ,
+	weekofmonth          integer    ,
+	CONSTRAINT pk_time PRIMARY KEY ( timeid )
+ );
+
+CREATE  TABLE "airquality".facts_airquality ( 
+	uniqueid             bigint  NOT NULL  ,
+	indicatorid          bigint  NOT NULL  ,
+	geojoinid            bigint  NOT NULL  ,
+	timeid               integer  NOT NULL  ,
+	datavalue            numeric(3,1)    ,
+	CONSTRAINT pk_facts_airquality PRIMARY KEY ( uniqueid, indicatorid, geojoinid, timeid )
+ );
+
+ALTER TABLE "instance".facts_airquality ADD CONSTRAINT fk_facts_airquality_indicator_0 FOREIGN KEY ( uniqueid ) REFERENCES "instance"."indicator"( uniqueid );
 ]]></string>
 		</script>
 	</layout>

@@ -1,15 +1,6 @@
-CREATE SCHEMA "AirQuality_DW";
+CREATE SCHEMA IF NOT EXISTS "airquality";
 
-CREATE  TABLE "AirQuality_DW".facts_airquality ( 
-	uniqueid             bigint  NOT NULL  ,
-	indicatorid          bigint  NOT NULL  ,
-	geojoinid            bigint  NOT NULL  ,
-	timeid               integer  NOT NULL  ,
-	datavalue            numeric(3,1)    ,
-	CONSTRAINT pk_facts_airquality PRIMARY KEY ( uniqueid, indicatorid, geojoinid, timeid )
- );
-
-CREATE  TABLE "AirQuality_DW".geography ( 
+CREATE  TABLE "airquality".geography ( 
 	geojoinid            bigint  NOT NULL  ,
 	geoplacename         char(20)    ,
 	longitutde           double precision    ,
@@ -17,14 +8,16 @@ CREATE  TABLE "AirQuality_DW".geography (
 	CONSTRAINT pk_geography PRIMARY KEY ( geojoinid )
  );
 
-CREATE  TABLE "AirQuality_DW"."indicator" ( 
+CREATE  TABLE "airquality"."indicator" ( 
 	indicator_id         bigint  NOT NULL  ,
 	measure              char(20)    ,
 	measureinfo          char(20)    ,
-	CONSTRAINT pk_indicator PRIMARY KEY ( indicator_id )
+	uniqueid             bigint[]  NOT NULL  ,
+	CONSTRAINT pk_indicator PRIMARY KEY ( indicator_id ),
+	CONSTRAINT unq_indicator_uniqueid UNIQUE ( uniqueid ) 
  );
 
-CREATE  TABLE "AirQuality_DW"."time" ( 
+CREATE  TABLE "airquality"."time" ( 
 	timeid               varchar(20)  NOT NULL  ,
 	dateoriginalformat   date    ,
 	dateisoformat        date    ,
@@ -38,3 +31,13 @@ CREATE  TABLE "AirQuality_DW"."time" (
 	CONSTRAINT pk_time PRIMARY KEY ( timeid )
  );
 
+CREATE  TABLE "airquality".facts_airquality ( 
+	uniqueid             bigint  NOT NULL  ,
+	indicatorid          bigint  NOT NULL  ,
+	geojoinid            bigint  NOT NULL  ,
+	timeid               integer  NOT NULL  ,
+	datavalue            numeric(3,1)    ,
+	CONSTRAINT pk_facts_airquality PRIMARY KEY ( uniqueid, indicatorid, geojoinid, timeid )
+ );
+
+ALTER TABLE "instance".facts_airquality ADD CONSTRAINT fk_facts_airquality_indicator_0 FOREIGN KEY ( uniqueid ) REFERENCES "instance"."indicator"( uniqueid );
